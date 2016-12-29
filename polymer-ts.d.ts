@@ -63,9 +63,25 @@ declare module polymer {
         updateStyles(): void;
     }
     interface dom {
-        (node: HTMLElement): HTMLElement;
-        (node: polymer.Base): HTMLElement;
+        (node: HTMLElement): DomAPI;
+        (node: polymer.Base): DomAPI;
         flush(): any;
+    }
+    interface DomAPI {
+      appendChild(node: HTMLElement): HTMLElement;
+      insertBefore(node, beforeNode);
+      removeChild(node);
+      childNodes():Array<HTMLElement>;
+      children():Array<HTMLElement>;
+      parentNode():HTMLElement;
+      firstChild():HTMLElement;
+      lastChild():HTMLElement;
+      firstElementChild():HTMLElement;
+      lastElementChild():HTMLElement;
+      previousSibling():HTMLElement;
+      nextSibling():HTMLElement;
+      textContent():string;
+      innerHTML():string;
     }
     interface FireOptions {
         node?: HTMLElement | polymer.Base;
@@ -105,6 +121,11 @@ declare module polymer {
         static create<T extends polymer.Base>(...args: any[]): T;
         static register(): void;
         is: string;
+        properties?: {
+          [name: string]: Property;
+        }
+        observers?: Array<string>;
+        behaviors?: Array<any>;
     }
     function createEs6PolymerBase(): void;
     function prepareForRegistration(elementClass: Function): polymer.Element;
@@ -122,6 +143,7 @@ declare var Polymer: {
     removeChild(node: HTMLElement): HTMLElement;
     updateStyles(): void;
     Base: any;
+    IronValidatableBehavior: FunctionConstructor;
 };
 declare function component(tagname: string, extendsTag?: string): (target: Function) => void;
 declare function extend(tagname: string): (target: Function) => void;
